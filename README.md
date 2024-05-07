@@ -6,31 +6,43 @@ tailscale内网穿透常用命令
 
 #可以根据实际情况替换最新的
 
-```wget https://github.com/adyanth/openwrt-tailscale-enabler/releases/download/v1.60.0-e428948-autoupdate/openwrt-tailscale-enabler-v1.60.0-e428948-autoupdate.tgz```  
+```
+wget https://github.com/adyanth/openwrt-tailscale-enabler/releases/download/v1.60.0-e428948-autoupdate/openwrt-tailscale-enabler-v1.60.0-e428948-autoupdate.tgz
+```  
 
 2、解压软件包
 
-```tar x -zvC / -f openwrt-tailscale-enabler-v1.60.0-e428948-autoupdate.tgz```
+```
+tar x -zvC / -f openwrt-tailscale-enabler-v1.60.0-e428948-autoupdate.tgz
+```
 
 3、安装依赖包
 
-```opkg update```
+```
+opkg update
 
-```opkg install libustream-openssl ca-bundle kmod-tun```
+opkg install libustream-openssl ca-bundle kmod-tun
+```
 
 4、设置开机自启并验证
 
-```/etc/init.d/tailscale enable```
+```
+/etc/init.d/tailscale enable
 
-```ls /etc/rc.d/S*tailscale*```
+ls /etc/rc.d/S*tailscale*
+```
 
 5、启动Tailscale
 
-```/etc/init.d/tailscale start```
+```
+/etc/init.d/tailscale start
+```
 
 6、获取登录链接，配置路由
 
-```tailscale up```
+```
+tailscale up
+```
 
 7、Tailscale常用命令
 
@@ -46,13 +58,17 @@ tailscale内网穿透常用命令
 
 在Tailscale的管理页面上，单击设备列表右侧的更多图标，禁用密钥过期，并打开子网路由。
 
-```tailscale up --accept-routes --advertise-routes=192.168.2.0/24 --accept-dns=false```
+```
+tailscale up --accept-routes --advertise-routes=192.168.2.0/24 --accept-dns=false
+```
 
 ![image](https://github.com/3981877/tailscale/assets/60610978/84773267-524b-4d4b-9eca-c063626c9f05)
 
 如果是使用headscale搭建的，可以用下面的命令
 
-```tailscale up --login-server=http://服务器IP:headscale端口 --accept-routes=true --accept-dns=false --advertise-routes=192.168.2.0/24 --reset```
+```
+tailscale up --login-server=http://服务器IP:headscale端口 --accept-routes=true --accept-dns=false --advertise-routes=192.168.2.0/24 --reset
+```
 
 9、添加接口
 
@@ -66,8 +82,13 @@ tailscale内网穿透常用命令
 
 网络——防火墙——自定义规则——把下面的规则添加进去——重启防火墙
 
-```iptables -I FORWARD -i tailscale0 -j ACCEPT```
+```
+iptables -I FORWARD -i tailscale0 -j ACCEPT
+```
+```
+iptables -I FORWARD -o tailscale0 -j ACCEPT
+```
 
-```iptables -I FORWARD -o tailscale0 -j ACCEPT```
-
-```iptables -t nat -I POSTROUTING -o tailscale0 -j MASQUERADE```
+```
+iptables -t nat -I POSTROUTING -o tailscale0 -j MASQUERADE
+```
